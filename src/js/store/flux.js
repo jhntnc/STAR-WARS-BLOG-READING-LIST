@@ -1,43 +1,55 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			people: [],
+			planets : [],
+			favorite: [],
+			isLoading: true
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+			
+			getPeopleFetch: async () => {
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+				setStore({isLoading: true})
 
-				//reset the global store
-				setStore({ demo: demo });
+				try {await fetch("https://www.swapi.tech/api/people/")
+				.then(res => res.json())
+				.then(data => {setStore({people: data.results})
+				setStore({isLoading: false})
+			})
+
+			}catch (error) {
+				console.log('there is a problem with fetch:' + error.message);
+				setStore({isLoading: false})
 			}
+			}, 
+			getPlanetsFetch: async () => {
+
+				setStore({isLoading: true})
+
+				try {await fetch("https://www.swapi.tech/api/planets/")
+				.then(res => res.json())
+				.then(data => {setStore({planets: data.results})
+				setStore({isLoading: false})
+			})
+
+			}catch (error) {
+				console.log('there is a problem with fetch:' + error.message);
+				setStore({isLoading: false})
+			}
+			}, 
+			addFavoriteItem: async (item) => {
+
+				setStore({
+					favorite: [...getStore().favorite, item]
+				})
+			},
+			removeFavoriteItem: async (index) => {
+				const { favorite } = getStore();
+				const updatedFavorites = [...favorite.slice(0, index), ...favorite.slice(index + 1)];
+				setStore({ favorite: updatedFavorites });
+			  }
+			
 		}
 	};
 };

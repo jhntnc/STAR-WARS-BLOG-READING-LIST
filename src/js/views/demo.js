@@ -17,7 +17,7 @@ export const Demo = () => {
 							key={index}
 							className="list-group-item d-flex justify-content-between"
 							style={{ background: item.background }}>
-							<Link to={"/single/" + index}>
+							<Link to={"/planet/" + index}>
 								<span>Link to: {item.title}</span>
 							</Link>
 							{// Conditional render example

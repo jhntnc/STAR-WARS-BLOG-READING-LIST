@@ -1,0 +1,16 @@
+.cardContainerHome {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.cardItem {
+    width: 300px;
+    margin-right: 10px;
+    padding: 1rem;
+  }
+
+.logo {
+    width: 80px
+}
+
+
